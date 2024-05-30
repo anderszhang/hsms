@@ -117,6 +117,12 @@ class ValidationHelper {
 				res = pfv;
 			}
 		}
+		if (format == ItemFormat.Bin) {
+			// 十六机制数据
+			if(value.startsWith("0x")){
+				res = parseInt(value);
+			}
+		}
 
 		try {
 			switch (format) {
@@ -155,7 +161,11 @@ class ValidationHelper {
 				case ItemFormat.U8:
 					res = ValidationHelper.getULongInRange(res);
 					break;
-	
+				case ItemFormat.Bin:
+					if(res){
+						// todo: 验证是否为合法的十六机制
+					}
+					break;
 
 				case ItemFormat.A: {
 					if (ValidationHelper.isUndefined(size) || !Number.isInteger(size)) {
