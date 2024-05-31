@@ -166,6 +166,8 @@ module.exports = (function () {
 
       case ItemFormat.F8:
         return decodeF8( b, len );
+      case ItemFormat.Bin:
+        return decodeBin( b, len );
     }
   }
 
@@ -210,6 +212,25 @@ module.exports = (function () {
       }
 
       let di = DataItem.i1( '', ...arr );
+
+      return di;
+    }
+  }
+
+  function decodeBin( b, len ){
+    let nominalLen = 1;
+
+    if( nominalLen === len ){
+      return DataItem.b( '', b.readInt8() );
+    } else {
+      var count = len / nominalLen;
+      var arr = [];
+
+      for( let i = 0; i < count; ++i ){
+        arr.push( b.readInt8() );
+      }
+
+      let di = DataItem.b( '', ...arr );
 
       return di;
     }

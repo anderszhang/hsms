@@ -88,24 +88,30 @@ module.exports = (function() {
 
       switch (this.format) {
         case ItemFormat.A: {
-          let base = `${indent}${key}<${len}> ${this.name}`;
-          return +!this.value ? base : `${base} [${this.value}]`;
+          // let base = `${indent}${key}<${len}> ${this.name}`;
+          // return +!this.value ? base : `${base} [${this.value}]`;
+          return `${indent}<${key} [${len}] ${this.name} "${this.value}">`;
+          
+        }
+        case ItemFormat.Bin: {
+          return `${indent}<B ${this.name} 0x${parseInt(this.value,16)}>`
         }
 
         case ItemFormat.List: {
-          let str = `${key} ${this.name}`;
+          let str = `<L [${this.value.length}]`;
           this.value.forEach(
             (x) => (str += "\n" + indent + x.toString(indent + "  "))
           );
-          return indent + str;
+          return indent + str + `\n ${indent}>`;
         }
       }
 
       if (!ItemFormat.isSizeable(this.format)) {
         return this.value instanceof Array
-          ? `${indent}${key}<${this.value.length}> ${this.name} [${this.value}]`
-          : `${indent}${key} ${this.name} [${this.value}]`;
+          ? `${indent}<${key} [${this.value.length}] ${this.name} ${this.value} >`
+          : `${indent}<${key} ${this.name} ${this.value} >`;
       }
+  
     }
 
     /**
@@ -277,6 +283,15 @@ module.exports = (function() {
     static a(name = "", v, size = 0) {
       return DataItem.builder
         .format(ItemFormat.A)
+        .size(size)
+        .value(v)
+        .name(name)
+        .build();
+    }
+
+    static b(name = "", v, size = 0) {
+      return DataItem.builder
+        .format(ItemFormat.Bin)
         .size(size)
         .value(v)
         .name(name)
