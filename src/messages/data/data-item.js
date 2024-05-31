@@ -289,6 +289,13 @@ module.exports = (function() {
         .build();
     }
 
+    /**
+     * Creates binary data item.
+     * @param {*} name 
+     * @param {*} v 
+     * @param {*} size 
+     * @returns 
+     */
     static b(name = "", v, size = 0) {
       return DataItem.builder
         .format(ItemFormat.Bin)

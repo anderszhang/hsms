@@ -221,7 +221,8 @@ module.exports = (function () {
     let nominalLen = 1;
 
     if( nominalLen === len ){
-      return DataItem.b( '', b.readInt8() );
+      let i = b.readUint8();
+      return DataItem.b( '','0x'+i.toString(16) );
     } else {
       var count = len / nominalLen;
       var arr = [];
