@@ -114,7 +114,7 @@ module.exports = (function () {
 		 * Returns a string that represents the current message.
 		 */
 		toString() {
-			return `S${this.stream}F${this.func}`;
+			return `S${this.stream}F${this.func}  ${this.replyExpected == true ? "W" : ""}`;
 		}
 		/**
 		 * Returns a string that represents the current message including children.
@@ -124,7 +124,7 @@ module.exports = (function () {
 	
 			this.items.forEach( c => 	s = s.concat( '\n' + c.toString( "  " )));
 		
-			return s;
+			return s +".";
 		}
 		/**
 		 * Creates a deep copy of current message.

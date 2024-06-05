@@ -80,7 +80,7 @@ module.exports = (function() {
         (k) => ItemFormat[k] === this.format
       );
 
-      const len = ItemFormat.isSizeable(this.format) ? this.size : "";
+      const len = ItemFormat.isSizeable(this.format) ? this.size : this.value.length;
 
       if (!validator.isString(indent)) {
         indent = "";
@@ -94,7 +94,9 @@ module.exports = (function() {
           
         }
         case ItemFormat.Bin: {
-          return `${indent}<B ${this.name} 0x${parseInt(this.value,16)}>`
+          const v = this.value.toString(16).toUpperCase()
+          const l = Math.ceil(v.length / 2)
+          return `${indent}<B [${l}] ${this.name} 0x${v}>`;
         }
 
         case ItemFormat.List: {
@@ -107,9 +109,10 @@ module.exports = (function() {
       }
 
       if (!ItemFormat.isSizeable(this.format)) {
+
         return this.value instanceof Array
-          ? `${indent}<${key} [${this.value.length}] ${this.name} ${this.value} >`
-          : `${indent}<${key} ${this.name} ${this.value} >`;
+          ? `${indent}<${key} [${len}] ${this.value} >`
+          : `${indent}<${key} [${len}] ${this.value} >`;
       }
   
     }
